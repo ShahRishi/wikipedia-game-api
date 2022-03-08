@@ -77,13 +77,14 @@ while (q.empty() == False) and (found == False):
     x = q.get()
     print(x)
     for child in nestedLinks(getSoup(x), x):
-        parents[child] = x
-        print(child)
-        if child == destLink:
-            print("******Solution Found!******")
-            found = True
-            break
-        print(child)
+        if child not in parents:
+            status[child] = 'visited'
+            parents[child] = x
+            print(child)
+            if child == destLink:
+                print("******Solution Found!******")
+                found = True
+                break
         q.put(child)
 
 
