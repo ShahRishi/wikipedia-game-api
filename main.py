@@ -58,19 +58,9 @@ def nestedLinks(soup, soupLink):
             if re.match(r'/wiki/*', link.get('href')):
                 nestedLink = 'https://en.wikipedia.org' + link.get('href')
                 links += [nestedLink]            #bucket for input soupLink
-                parents[nestedLink] = soupLink   #updates parent of child
-                status[nestedLink] = 'visited'   #updates status of child
-                #if getTitle(nestedLink) == getTitle(destLink):
-                    #print(getTitle(nestedLink))
-                    #print(getTitle(destLink))
-                    #found = True                 #updates terminating condition
-                    #break
-        
     adjList[soupLink] = links                    #creates adjacency list
     return links
 
-
-# In[14]:
 
 
 #input: url of the current 'node' (page)
@@ -81,14 +71,13 @@ def getSoup(nodeURL):
     return nodeSoup
 
 
-# In[ ]:
-
 
 q.put(rootLink)
 while (q.empty() == False) and (found == False):
     x = q.get()
     print(x)
     for child in nestedLinks(getSoup(x), x):
+        parents[child] = x
         print(child)
         if child == destLink:
             print("******Solution Found!******")
