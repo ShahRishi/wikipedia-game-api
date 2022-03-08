@@ -99,9 +99,9 @@ BFSTree = []
 
 while currNode != rootLink:
     print(currNode)
-    BFSTree = [currNode] + BFSTree
+    BFSTree = [getTitle(currNode)] + BFSTree
     currNode = parents[currNode]
-BFSTree = [currNode] + BFSTree
+BFSTree = [getTitle(currNode)] + BFSTree
 print(BFSTree)
 
 
