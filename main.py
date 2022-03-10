@@ -1,38 +1,40 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+########## IMPORT LIBRARIES ##########
+# import libraries
+from bs4 import BeautifulSoup        # scraping library for .html
+import queue                         # DS for BFS
+import urllib.request                # generate .html from URLs
+from urllib.request import urlopen   # generate .html from URLs
+import re                            # regular expression
 
 
-from bs4 import BeautifulSoup
-from queue import Queue
-import urllib.request
-from urllib.request import urlopen
-import re
-import queue
+
+########## READ INPUT ##########
+rootLink = input("Please enter your starting URL: ")   # source node
+destLink = input("Please enter your ending URL: ")     # dest node
 
 
-# In[10]:
+
+########## INIITALIZE DATA STRUCTURES ##########
+adjList, parents, status = {}, {}, {} # hashtables
+parents[rootLink] = None              # setting root node
+q = queue.Queue()                     # init empty queue
+found = False                         # terminating condition
 
 
-rootLink = input("Please enter your starting URL: ")
-rootHTML = urlopen(rootLink)
-destLink = input("Please enter your ending URL: ")
-#destHTML = urlopen(destLink)
 
+########## HELPER METHODS ##########
+### --- getSoup(nodeURL) - returns soup object for a Wikipedia URL
+# input: url of the current 'node' (page)
+# returns the soup of the current node
+def getSoup(nodeURL):
+    nodeHTML = urlopen(nodeURL)
+    nodeSoup = BeautifulSoup(nodeHTML, 'html.parser')    #creates soup object for nodeURL
+    return nodeSoup
 
-# In[11]:
-
-
-adjList, parents, status = {}, {}, {}
-parents[rootLink] = None
-q = queue.Queue()
-found = False
-
-
-# In[12]:
-
-
+### --- getTitle(link) - returns title string of Wikipedia page
 #input: link of page
 #output: title of page
 def getTitle(link):
@@ -41,13 +43,10 @@ def getTitle(link):
     s = title[7:-20]
     return s
 
-
-# In[13]:
-
-
+### --- nestedLinks(soup, soupLink) - returns all nested links in a Wikipedia page
 #input: soup page
 #output: list of all strings in a file
-#houskeeping: adds parents of children of soup, 
+#houskeeping: adds parents of children of soup,
 def nestedLinks(soup, soupLink):
     global found
     links = []
@@ -63,15 +62,7 @@ def nestedLinks(soup, soupLink):
 
 
 
-#input: url of the current 'node' (page)
-#returns the soup of the current node
-def getSoup(nodeURL):
-    nodeHTML = urlopen(nodeURL)
-    nodeSoup = BeautifulSoup(nodeHTML, 'html.parser')    #creates soup object for nodeURL
-    return nodeSoup
-
-
-
+########## BUILD BFS Tree ##########
 q.put(rootLink)
 while (q.empty() == False) and (found == False):
     x = q.get()
@@ -82,27 +73,24 @@ while (q.empty() == False) and (found == False):
             parents[child] = x
             print(child)
             if child == destLink:
+                for i in range(3):
+                    print()
                 print("******Solution Found!******")
                 found = True
                 break
         q.put(child)
 
 
-# In[8]:
 
-
-
-
-print("Backtracking BFS Tree")
+########## BACKTRACK BFS TREE ##########
+print()
+print("-----Backtracking BFS Tree-----")
+print()
 currNode = destLink
 BFSTree = []
-
 while currNode != rootLink:
-    print(currNode)
     BFSTree = [getTitle(currNode)] + BFSTree
     currNode = parents[currNode]
 BFSTree = [getTitle(currNode)] + BFSTree
-print(BFSTree)
-
-
-
+print('Link Tree: ' + str(BFSTree))
+print()
