@@ -6,7 +6,7 @@ The Wikipedia Game Bot is a python application developed to optimally solve the 
 1. `git clone https://github.com/ShahRishi/wiki-game-bot.git`
 2. `cd wiki-game-bot`
 3. `pip install -r requirements.txt`
-4. `python3 main.py
+4. `python3 main.py`
 
 
 	
