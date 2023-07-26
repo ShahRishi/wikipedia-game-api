@@ -56,7 +56,6 @@ class BFSSolver:
                 if child not in self.parents:
                     self.status[child] = 'visited'
                     self.parents[child] = x
-                    print(child)
                     if child == self.end_url:
                         self.found = True
                         break
