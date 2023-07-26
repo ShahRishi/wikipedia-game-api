@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  wikipedia-game-api:
+    image: shahrishi108/wikipedia-game-api:latest
+    ports:
+      - 80:5000
+    environment:
+      - FLASK_ENV=production
